@@ -18,13 +18,24 @@ public class RakeWarMain {
     public static final String MAIN = "/" + RakeWarMain.class.getName().replace('.', '/') + ".class";
 
     public static void main(String[] args) {
-        URL mainClass = getClass().getResource(MAIN);
-        String path = mainClass.toURI().getSchemeSpecificPart();
-        String warfile = this.path.replace("!" + MAIN, "").replace("file:", "");
+        try {
+            URL mainClass = RakeWarMain.class.getResource(MAIN);
+            String path = mainClass.toURI().getSchemeSpecificPart();
+            String warfile = path.replace("!" + MAIN, "").replace("file:", "");
 
-        System.out.println("RUNNING RakeWarMain");
-        System.out.println("path: " + path);
-        System.out.println("warfile: " + warfile);
+            System.out.println("RUNNING RakeWarMain");
+            System.out.println("path: " + path);
+            System.out.println("warfile: " + warfile);
+        } catch (Exception e) {
+            Throwable t = e;
+            while (t.getCause() != null && t.getCause() != t) {
+                t = t.getCause();
+            }
+
+            t.printStackTrace();
+
+            System.exit(1);
+        }
     }
 }
 

@@ -6,6 +6,7 @@ README.rdoc
 Rakefile
 bin/warble
 ext/JarMain.java
+ext/RakeWarMain.java
 ext/WarMain.java
 ext/WarblerJar.java
 ext/WarblerJarService.java
