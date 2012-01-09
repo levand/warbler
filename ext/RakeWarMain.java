@@ -26,6 +26,7 @@ public class RakeWarMain {
             System.out.println("RUNNING RakeWarMain");
             System.out.println("path: " + path);
             System.out.println("warfile: " + warfile);
+            System.out.println("classpath:" + System.getProperty("java.class.path"));
         } catch (Exception e) {
             Throwable t = e;
             while (t.getCause() != null && t.getCause() != t) {
