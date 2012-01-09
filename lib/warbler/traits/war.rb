@@ -78,6 +78,7 @@ module Warbler
         add_webxml(jar)
         move_jars_to_webinf_lib(jar)
         add_executables(jar) if config.features.include?("executable")
+        add_rake_executables(jar) if config.features.include?("rake_executable")
         add_gemjar(jar) if config.features.include?("gemjar")
       end
 
@@ -97,6 +98,11 @@ module Warbler
             jar.files[apply_pathmaps(config, wf, :webinf)] = wf
           end
         end
+      end
+
+      def add_rake_executables(jar)
+        jar.files['META-INF/MANIFEST.MF'] = StringIO.new(Warbler::Jar::DEFAULT_MANIFEST.chomp + "Main-Class: RakeWarMain\n")
+        jar.files['RakeWarMain.class'] = jar.entry_in_jar("#{WARBLER_HOME}/lib/warbler_jar.jar", 'WarMainRake.class')
       end
 
       def add_executables(jar)

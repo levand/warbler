@@ -193,6 +193,9 @@ module Warbler
       task "executable" do
         self.features << "executable"
       end
+      task "rake_executable" do
+        self.features << "rake_executable"
+      end
     end
 
     # Deprecated

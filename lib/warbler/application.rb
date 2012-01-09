@@ -40,6 +40,9 @@ class Warbler::Application < Rake::Application
     desc "Feature: make an executable archive"
     task :executable => "#{wt.name}:executable"
 
+    desc "Feature: make an executable rake archive"
+    task :executable => "#{wt.name}:rake_executable"
+
     desc "Feature: precompile all Ruby files"
     task :compiled => "#{wt.name}:compiled"
 
