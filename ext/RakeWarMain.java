@@ -5,13 +5,27 @@
  * See the file LICENSE.txt for details.
  */
 
-import java.net.URLClassLoader;
-import java.net.URL;
+import org.jruby.Ruby;
+import org.jruby.RubyInstanceConfig;
+import org.jruby.exceptions.RaiseException;
+import org.jruby.javasupport.JavaUtil;
+import org.jruby.runtime.ThreadContext;
+import org.jruby.runtime.builtin.IRubyObject;
+
 import java.lang.reflect.Method;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Reader;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URLClassLoader;
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Arrays;
 
 public class RakeWarMain {
@@ -27,6 +41,7 @@ public class RakeWarMain {
             System.out.println("path: " + path);
             System.out.println("warfile: " + warfile);
             System.out.println("classpath:" + System.getProperty("java.class.path"));
+            System.out.println("ruby:" + Ruby.class.getName());
         } catch (Exception e) {
             Throwable t = e;
             while (t.getCause() != null && t.getCause() != t) {
