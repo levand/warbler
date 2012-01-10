@@ -55,6 +55,7 @@ public class RakeWarMain extends JarMain{
         Method setClassLoader = scriptingContainerClass.getDeclaredMethod("setClassLoader", new Class[] {ClassLoader.class});
         setClassLoader.invoke(scriptingContainer, new Object[] {loader});
         debug("invoking " + jarfile + " with: " + Arrays.deepToString(args));
+        debug("cp=" + System.getProperty("java.class.path"));
 
         Method runScriptlet = scriptingContainerClass.getDeclaredMethod("runScriptlet", new Class[] {String.class});
         return ((Number) runScriptlet.invoke(scriptingContainer, new Object[] {
