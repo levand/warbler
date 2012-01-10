@@ -26,30 +26,25 @@ public class RakeWarMain extends JarMain{
 
     private int launchRake(URL[] jars) throws Exception {
 
-        System.out.println("Working so far...");
-        return 0;
+        System.setProperty("org.jruby.embed.class.path", "");
+        URLClassLoader loader = new URLClassLoader(jars);
+        Class scriptingContainerClass = Class.forName("org.jruby.embed.ScriptingContainer", true, loader);
+        Object scriptingContainer = scriptingContainerClass.newInstance();
 
-        // System.setProperty("org.jruby.embed.class.path", "");
-        // URLClassLoader loader = new URLClassLoader(jars);
-        // Class scriptingContainerClass = Class.forName("org.jruby.embed.ScriptingContainer", true, loader);
-        // Object scriptingContainer = scriptingContainerClass.newInstance();
+        Method argv = scriptingContainerClass.getDeclaredMethod("setArgv", new Class[] {String[].class});
+        argv.invoke(scriptingContainer, new Object[] {args});
+        Method setClassLoader = scriptingContainerClass.getDeclaredMethod("setClassLoader", new Class[] {ClassLoader.class});
+        setClassLoader.invoke(scriptingContainer, new Object[] {loader});
+        debug("invoking " + jarfile + " with: " + Arrays.deepToString(args));
 
-        // Method argv = scriptingContainerClass.getDeclaredMethod("setArgv", new Class[] {String[].class});
-        // argv.invoke(scriptingContainer, new Object[] {args});
-        // Method setClassLoader = scriptingContainerClass.getDeclaredMethod("setClassLoader", new Class[] {ClassLoader.class});
-        // setClassLoader.invoke(scriptingContainer, new Object[] {loader});
-        // debug("invoking " + jarfile + " with: " + Arrays.deepToString(args));
-
-        // Method runScriptlet = scriptingContainerClass.getDeclaredMethod("runScriptlet", new Class[] {String.class});
-        // return ((Number) runScriptlet.invoke(scriptingContainer, new Object[] {
-        //             "begin\n" +
-        //             "require 'META-INF/init.rb'\n" +
-        //             "require 'META-INF/main.rb'\n" +
-        //             "0\n" +
-        //             "rescue SystemExit => e\n" +
-        //             "e.status\n" +
-        //             "end"
-        //         })).intValue();
+        Method runScriptlet = scriptingContainerClass.getDeclaredMethod("runScriptlet", new Class[] {String.class});
+        return ((Number) runScriptlet.invoke(scriptingContainer, new Object[] {
+                    "begin\n" +
+                    "puts 'SO FAR SO GOOD FROM RUBY'\n" +
+                    "rescue SystemExit => e\n" +
+                    "e.status\n" +
+                    "end"
+                })).intValue();
     }
 
     protected int start() throws Exception {
