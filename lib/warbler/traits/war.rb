@@ -34,6 +34,7 @@ module Warbler
 
       def after_configure
         update_gem_path(DEFAULT_GEM_PATH)
+        config.init_contents << StringIO.new("require 'rubygems'\n")
       end
 
       def default_pathmaps
