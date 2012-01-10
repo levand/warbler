@@ -59,7 +59,8 @@ public class RakeWarMain extends JarMain{
         Method runScriptlet = scriptingContainerClass.getDeclaredMethod("runScriptlet", new Class[] {String.class});
         return ((Number) runScriptlet.invoke(scriptingContainer, new Object[] {
                     "begin\n" +
-                    "puts 'SO FAR SO GOOD FROM RUBY'\n" +
+                    "require 'Rakefile'" +
+                    "0\n" +
                     "rescue SystemExit => e\n" +
                     "e.status\n" +
                     "end"

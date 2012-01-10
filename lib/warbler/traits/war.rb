@@ -34,7 +34,7 @@ module Warbler
 
       def after_configure
         update_gem_path(DEFAULT_GEM_PATH)
-        config.init_contents << StringIO.new("require 'rubygems'\n")
+        config.includes.add "Rakefile" if config.features.include?("rake_executable")
       end
 
       def default_pathmaps
