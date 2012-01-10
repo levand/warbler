@@ -5,53 +5,72 @@
  * See the file LICENSE.txt for details.
  */
 
-import org.jruby.Ruby;
-import org.jruby.RubyInstanceConfig;
-import org.jruby.exceptions.RaiseException;
-import org.jruby.javasupport.JavaUtil;
-import org.jruby.runtime.ThreadContext;
-import org.jruby.runtime.builtin.IRubyObject;
-
-import java.lang.reflect.Method;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.Reader;
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URLClassLoader;
+import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-public class RakeWarMain {
-    public static final String MAIN = "/" + RakeWarMain.class.getName().replace('.', '/') + ".class";
+public class RakeWarMain extends JarMain{
+
+    public RakeWarMain(String[] args) throws Exception {
+        super(args);
+    }
+
+    private int launchRake(URL[] jars) throws Exception {
+
+        System.out.println("Working so far...");
+        return 0;
+
+        // System.setProperty("org.jruby.embed.class.path", "");
+        // URLClassLoader loader = new URLClassLoader(jars);
+        // Class scriptingContainerClass = Class.forName("org.jruby.embed.ScriptingContainer", true, loader);
+        // Object scriptingContainer = scriptingContainerClass.newInstance();
+
+        // Method argv = scriptingContainerClass.getDeclaredMethod("setArgv", new Class[] {String[].class});
+        // argv.invoke(scriptingContainer, new Object[] {args});
+        // Method setClassLoader = scriptingContainerClass.getDeclaredMethod("setClassLoader", new Class[] {ClassLoader.class});
+        // setClassLoader.invoke(scriptingContainer, new Object[] {loader});
+        // debug("invoking " + jarfile + " with: " + Arrays.deepToString(args));
+
+        // Method runScriptlet = scriptingContainerClass.getDeclaredMethod("runScriptlet", new Class[] {String.class});
+        // return ((Number) runScriptlet.invoke(scriptingContainer, new Object[] {
+        //             "begin\n" +
+        //             "require 'META-INF/init.rb'\n" +
+        //             "require 'META-INF/main.rb'\n" +
+        //             "0\n" +
+        //             "rescue SystemExit => e\n" +
+        //             "e.status\n" +
+        //             "end"
+        //         })).intValue();
+    }
+
+    protected int start() throws Exception {
+        URL[] u = extractJRuby();
+        return launchRake(u);
+    }
 
     public static void main(String[] args) {
         try {
-            URL mainClass = RakeWarMain.class.getResource(MAIN);
-            String path = mainClass.toURI().getSchemeSpecificPart();
-            String warfile = path.replace("!" + MAIN, "").replace("file:", "");
-
-            System.out.println("RUNNING RakeWarMain");
-            System.out.println("path: " + path);
-            System.out.println("warfile: " + warfile);
-            System.out.println("classpath:" + System.getProperty("java.class.path"));
-            System.out.println("ruby:" + Ruby.class.getName());
+            int exit = new RakeWarMain(args).start();
+            System.exit(exit);
         } catch (Exception e) {
             Throwable t = e;
             while (t.getCause() != null && t.getCause() != t) {
                 t = t.getCause();
             }
 
-            t.printStackTrace();
-
+            if (isDebug()) {
+                t.printStackTrace();
+            }
             System.exit(1);
         }
     }
 }
-

@@ -21,10 +21,10 @@ import java.util.jar.JarFile;
 public class JarMain implements Runnable {
     public static final String MAIN = "/" + JarMain.class.getName().replace('.', '/') + ".class";
 
-    private String[] args;
-    private String path, jarfile;
-    private boolean debug;
-    private File extractRoot;
+    protected String[] args;
+    protected String path, jarfile;
+    protected boolean debug;
+    protected File extractRoot;
 
     public JarMain(String[] args) throws Exception {
         this.args = args;
@@ -38,7 +38,7 @@ public class JarMain implements Runnable {
         Runtime.getRuntime().addShutdownHook(new Thread(this));
     }
 
-    private URL[] extractJRuby() throws Exception {
+    protected URL[] extractJRuby() throws Exception {
         JarFile jf = new JarFile(this.jarfile);
         List<String> jarNames = new ArrayList<String>();
         for (Enumeration<JarEntry> eje = jf.entries(); eje.hasMoreElements(); ) {
@@ -56,7 +56,7 @@ public class JarMain implements Runnable {
         return (URL[]) urls.toArray(new URL[urls.size()]);
     }
 
-    private URL extractJar(String jarpath) throws Exception {
+    protected URL extractJar(String jarpath) throws Exception {
         InputStream jarStream = new URL("jar:" + path.replace(MAIN, jarpath)).openStream();
         String jarname = jarpath.substring(jarpath.lastIndexOf("/") + 1, jarpath.lastIndexOf("."));
         File jarFile = new File(extractRoot, jarname + ".jar");
@@ -100,18 +100,18 @@ public class JarMain implements Runnable {
                 })).intValue();
     }
 
-    private int start() throws Exception {
+    protected int start() throws Exception {
         URL[] u = extractJRuby();
         return launchJRuby(u);
     }
 
-    private void debug(String msg) {
+    protected void debug(String msg) {
         if (debug) {
             System.out.println(msg);
         }
     }
 
-    private void delete(File f) {
+    protected void delete(File f) {
         if (f.isDirectory()) {
             File[] children = f.listFiles();
             for (int i = 0; i < children.length; i++) {
@@ -142,7 +142,7 @@ public class JarMain implements Runnable {
         }
     }
 
-    private static boolean isDebug() {
+    protected static boolean isDebug() {
         return System.getProperty("warbler.debug") != null;
     }
 }
