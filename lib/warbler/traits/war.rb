@@ -103,6 +103,7 @@ module Warbler
       def add_rake_executables(jar)
         jar.files['META-INF/MANIFEST.MF'] = StringIO.new(Warbler::Jar::DEFAULT_MANIFEST.chomp + "Main-Class: RakeWarMain\n")
         jar.files['RakeWarMain.class'] = jar.entry_in_jar("#{WARBLER_HOME}/lib/warbler_jar.jar", 'RakeWarMain.class')
+        jar.files['JarMain.class'] = jar.entry_in_jar("#{WARBLER_HOME}/lib/warbler_jar.jar", 'JarMain.class')
       end
 
       def add_executables(jar)
