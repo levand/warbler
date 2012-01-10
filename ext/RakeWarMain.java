@@ -24,6 +24,25 @@ public class RakeWarMain extends JarMain{
         super(args);
     }
 
+     protected URL[] extractJRuby() throws Exception {
+
+        JarFile jf = new JarFile(this.jarfile);
+        List<String> jarNames = new ArrayList<String>();
+        for (Enumeration<JarEntry> eje = jf.entries(); eje.hasMoreElements(); ) {
+            String name = eje.nextElement().getName();
+            if (name.startsWith("WEB-INF/lib") && name.endsWith(".jar")) {
+                jarNames.add("/" + name);
+            }
+        }
+
+        List<URL> urls = new ArrayList<URL>();
+        for (String name : jarNames) {
+            urls.add(extractJar(name));
+        }
+
+        return (URL[]) urls.toArray(new URL[urls.size()]);
+     }
+
     private int launchRake(URL[] jars) throws Exception {
 
         System.setProperty("org.jruby.embed.class.path", "");
