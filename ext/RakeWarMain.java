@@ -60,7 +60,10 @@ public class RakeWarMain extends JarMain{
         Method runScriptlet = scriptingContainerClass.getDeclaredMethod("runScriptlet", new Class[] {String.class});
         return ((Number) runScriptlet.invoke(scriptingContainer, new Object[] {
                     "begin\n" +
-                    "puts $LOAD_PATH\n" + 
+                    "puts 'pwd:'\n" + 
+                    "puts Dir.pwd\n" +
+                    "puts 'loadpath:'\n" +
+                    "puts $LOAD_PATH\n" +
                     //                    "require 'META_INF/init.rb'\n" + 
                     // "require 'WEB_INF/Rakefile'\n" +
                     "0\n" +
