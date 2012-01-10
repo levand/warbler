@@ -34,7 +34,12 @@ module Warbler
 
       def after_configure
         update_gem_path(DEFAULT_GEM_PATH)
-        config.includes.add "Rakefile" if config.features.include?("rake_executable")
+
+        if config.features.include?("rake_executable")
+          config.includes.add "Rakefile"
+          add_init_load_path(config.pathmaps.application.inject("WEB-INF") {|pm,x| pm.pathmap(x)})
+        end
+
       end
 
       def default_pathmaps

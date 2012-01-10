@@ -60,6 +60,7 @@ public class RakeWarMain extends JarMain{
         Method runScriptlet = scriptingContainerClass.getDeclaredMethod("runScriptlet", new Class[] {String.class});
         return ((Number) runScriptlet.invoke(scriptingContainer, new Object[] {
                     "begin\n" +
+                    "require 'META_INF/init.rb'\n" + 
                     "require 'WEB_INF/Rakefile'\n" +
                     "0\n" +
                     "rescue SystemExit => e\n" +
